@@ -15,4 +15,7 @@ What's in the Latvian localflavor?
 
 See the source code for full details.
 
-.. image:: https://travis-ci.org/krikulis/django-localflavor-lv.png
+|CI|_
+
+.. |CI| image:: https://travis-ci.org/krikulis/django-localflavor-lv.png
+.. _CI: https://travis-ci.org/#!/krikulis/django-localflavor-lv
