@@ -1,5 +1,6 @@
 # encoding: utf-8
 import re
+import time
 
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -14,13 +15,13 @@ def validate_identity_code_checksum(code):
     """
     date_part, other_part = code.split("-")
     code = u"%s%s" % (date_part, other_part)
-    magic_numbers = [1,6,3,7,9,10,5,8,4,2]
+    magic_numbers = [1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
     checksum = 0
     for i in xrange(0, 10):
-        checksum += int(code[i]) * validation_data[i]
-        checksum = (1101 - checksum) % 11
+        checksum += int(code[i]) * magic_numbers[i]
+    checksum = (1101 - checksum) % 11
     if checksum != int(code[10]):
-        raise ValidatioError(_("invalid identity code"))
+        raise ValidationError(_("invalid identity code"))
 
 
 def validate_identity_code(value):
@@ -34,10 +35,9 @@ def validate_identity_code(value):
     error_message = _("identity numbers must be in ddmmgg-xxxxx format")
     if not _identity_number_re.match(value):
         raise ValidationError(error_message)
-    date_part, _ = value.split("-")
+    date_part, meta_part = value.split("-")
     try:
-        time.stptime(date, "%d%m%y")
+        time.strptime(date_part, "%d%m%y")
     except ValueError:
         raise ValidationError(error_message)
     validate_identity_code_checksum(value)
-
