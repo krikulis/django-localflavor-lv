@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.6"
+  - "2.7"
+install:
+  - "pip install --quiet --requirement=requirements/tests.txt --use-mirrors"
+  - "pip install --quiet django==$DJANGO --use-mirrors"
+  - "pip install -qe ."
+script:
+  - "make test"
+env:
+  - DJANGO=1.4.2
+
